@@ -1,0 +1,51 @@
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .sss {
+      color: green;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="test"></div>
+  <script src="https://cdn.bootcdn.net/ajax/libs/react/17.0.1/umd/react.development.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/react-dom/17.0.1/umd/react-dom.development.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/babel-standalone/7.0.0-beta.3/babel.min.js"></script>
+  <script type="text/babel">
+    const obj = {
+      id: 'title',
+      className: 'sss',
+      name: '名字111',
+      age: '19岁',
+      firstStyle: {
+        color: '#000'
+      }
+    }
+
+    // 定义虚拟dom时多级用括号包起来，不能写引号，跟标签只能有一个
+    // {}中的语句代表执行js的代码,class是js的关键字，用className代替
+    // style不能直接写，只能用变量替换
+    // 单标签必须加上结束符号/，或者改成多标签，如果用多标签就不能添加子元素
+    // 自定义的标签无法使用，会报warning
+    // 首字母大些的标签被视为组件<Good></Good>
+    const VDOM = (
+      <h1 id={obj.id} className={obj.className}>
+        <span style={obj.firstStyle}>{obj.name}</span>
+        ------
+        <span style={{color: 'pink'}}>{obj.age.split('').reverse().join('')}</span>
+        <input type="text"/>
+        <input type="text"></input>
+        <custom>我是自定义标签</custom>
+        
+      </h1>
+    );
+    ReactDOM.render(VDOM, document.querySelector('#test'));
+  </script>
+</body>
+
+</html>

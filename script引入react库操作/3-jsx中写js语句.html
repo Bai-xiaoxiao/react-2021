@@ -1,0 +1,74 @@
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .sss {
+      color: green;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="test"></div>
+  <script src="https://cdn.bootcdn.net/ajax/libs/react/17.0.1/umd/react.development.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/react-dom/17.0.1/umd/react-dom.development.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/babel-standalone/7.0.0-beta.3/babel.min.js"></script>
+  <script type="text/babel">
+    const arr = ['react', 'vue', 'angular'];
+
+    let arr222 = [];
+    for (let i = 0; i < arr.length; i++) {
+      arr222.push(<li key={arr[i]}>{arr[i]}</li>)
+    }
+
+    const arr3 = [window]
+
+    let ifMsg = null;
+    if (arr.length) {
+      ifMsg = <span>我是真的</span>
+    } else {
+      ifMsg = <span>我是假的</span>
+    }
+
+    function getMsg(msg) {
+      return <span>我是{msg}</span>
+    }
+
+
+    // jsx中只能写js表达式，不能写js语句(代码)
+    // 表达式：会产生一个值，例如a，a+b，a++，++a，demo(1)
+    // 语句：if(){} for(){}等不产生值
+
+    // jsx遇到<>，就认为是标签，所以标签中的变量也需要{}包起来
+    // 花括号中如果是数组自动展开解析
+    // arr会被解析成字符串，arr222被解析成jsx的标签，arr3无法解析，会报错
+    const VDOM = (
+      <div>
+        <ul>
+          {[<li key="asd">xxx</li>, <li key="sdfs">xxxxx</li>]}
+          {
+            // map返回数组，自动展开解析
+            arr.map(item => {
+              return <li key={item}>{item}</li>
+            })
+          }
+          {
+            arr222
+          }
+        </ul>
+
+        <h2>下面看下if语句：if语句没办法写在jsx中，只能在外部判断，然后通过变量写进来</h2>
+        <p>{ifMsg}</p>
+
+        <h2>取函数值返回值：{getMsg('哈哈哈')}</h2>
+      </div>
+    );
+
+    ReactDOM.render(VDOM, document.querySelector('#test'))
+  </script>
+</body>
+
+</html>

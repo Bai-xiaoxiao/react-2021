@@ -1,0 +1,36 @@
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <div id="test"></div>
+  <div id="test222"></div>
+  <script src="https://cdn.bootcdn.net/ajax/libs/react/17.0.1/umd/react.development.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/react-dom/17.0.1/umd/react-dom.development.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/babel-standalone/7.0.0-beta.3/babel.min.js"></script>
+  <!-- babel出了能将ES6转成ES5，还能解析JSX -->
+  <script type="text/babel">
+    // 使用jsx,多级标签使用括号包
+    var VDOM = (
+      <h1 id="title">
+        <span>我是11111</span>
+      </h1>
+    );
+    // VDOM包含一些虚拟dom的属性，类似vue的
+    console.log(VDOM);
+    ReactDOM.render(VDOM, document.querySelector('#test'));
+
+
+
+
+    // 用React.createElement
+    var d222 = React.createElement('h1', { id: 'title222' }, '我是测试2');
+    ReactDOM.render(d222, document.querySelector('#test222'));
+  </script>
+</body>
+
+</html>

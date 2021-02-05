@@ -1,0 +1,37 @@
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+    class Person {
+      // 构造器
+      constructor(name, age) {
+        // 这里的this指向实例对象
+        this.name = name
+        this.age = age
+      }
+
+      // 一般方法
+      // 放在类的原型对象上。实例对象本身不存在这个属性，但是原型链上存在
+      speak() {
+        // 这里的this指向调用者
+        console.log(`我叫${this.name}，年龄${this.age}`);
+      }
+    }
+    const p1 = new Person('Tom-Jerry', 26);
+    console.log(p1);
+    p1.speak();
+
+    p1.speak.call({});
+    Function.prototype.myCall = function (obj) {
+      obj.fn = this;
+      obj.fn();
+      delete obj.fn;
+    }
+    p1.speak.myCall({name: '擦拭call', age: 0})
+  </script>
+</body>
+</html>
