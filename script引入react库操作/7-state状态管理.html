@@ -1,0 +1,49 @@
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="icon" href="https://element.eleme.cn/2.14/favicon.ico">
+</head>
+
+<body>
+  <div id="test"></div>
+  <script src="https://cdn.bootcdn.net/ajax/libs/react/17.0.1/umd/react.development.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/react-dom/17.0.1/umd/react-dom.development.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/babel-standalone/7.0.0-beta.3/babel.min.js"></script>
+
+  <script type="text/babel">
+    class Custom extends React.Component {
+      constructor(props) {
+        // 相当于执行父类的构造器方法，把props作为参数
+        super(props);
+
+        this.state = {
+          isHot: true
+        }
+      }
+
+      handleClick() {
+        console.log(this);
+        this.setState(state => {
+          return {
+            isHot: !this.state.isHot
+          }
+        })
+      }
+
+      render() {
+        const { state } = this;
+
+        // onClick={this.handleClick}这种写法：handleClick的this得到window
+        // onClick={() => this.handleClick()}这种写法：箭头函数找就近的this，得到实例对象
+        return <h1 onClick={() => this.handleClick()}>今天的天气很{state.isHot ? '炎热' : '寒冷'}</h1>
+      }
+    }
+
+    ReactDOM.render(<Custom />, document.querySelector('#test'));
+  </script>
+</body>
+
+</html>

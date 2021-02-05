@@ -1,0 +1,33 @@
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="icon" href="https://element.eleme.cn/2.14/favicon.ico">
+</head>
+<body>
+  <div id="test"></div>
+  <script src="https://cdn.bootcdn.net/ajax/libs/react/17.0.1/umd/react.development.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/react-dom/17.0.1/umd/react-dom.development.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/babel-standalone/7.0.0-beta.3/babel.min.js"></script>
+
+  <script type="text/babel">
+    // 创建类
+    // 这里的React和Component都是首字母大写，react要求类组件和函数组件需要首字母大写
+    class Custom extends React.Component {
+      // 是否写构造器在于是否需要添加自己的属性
+
+      // 必须要写render函数，且有返回值,跟函数式组件相同
+      render() {
+        // 这里的this指向实例对象，并且继承了React.Component的许多属性和方法
+        console.log(this);
+        return <h1>类式组件，适用于复杂组件</h1>
+      }
+    }
+
+    // render发生了什么？render方法在实例上才能调用到，这里为什么能执行？
+    // 发现是组件是类定义的：执行new操作拿到实例，执行实例的render方法
+    ReactDOM.render(<Custom />, document.querySelector('#test'));
+  </script>
+</body>
+</html>

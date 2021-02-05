@@ -12,14 +12,17 @@
   <script src="https://cdn.bootcdn.net/ajax/libs/babel-standalone/7.0.0-beta.3/babel.min.js"></script>
 
   <script type="text/babel">
-    // 定义组件
+    // 定义组件--函数式组件用于创建很简单的组件--也就是没有state的组件
     function Custom() {
       // window 按理来说应该是undefiend，因为babel转换之后会采用严格模式，严格模式下没有被主动调用的函数this都为undefiend
       // 这里是window的原因可能是我的babel版本不对造成的
       console.log(this);
+      // 必须要有返回值
       return <h2>我是函数式组件，哈哈哈</h2>
     }
 
+    // render发生了什么？
+    // 发现是组件是函数定义的：执行函数。
     ReactDOM.render(<Custom />, document.querySelector('#test'))
   </script>
 </body>
