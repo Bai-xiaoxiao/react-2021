@@ -1,0 +1,46 @@
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="icon" href="https://element.eleme.cn/2.14/favicon.ico">
+</head>
+
+<body>
+  <div id="test"></div>
+  <!-- <script src="https://cdn.bootcdn.net/ajax/libs/babel-standalone/7.0.0-beta.3/babel.min.js"></script>
+  <script type="text/babel"> -->
+  <script type="text/javascript">
+    class Person {
+      constructor(name, age) {
+        this.name = name
+        this.age = age
+      }
+
+      speak() {
+        console.log(this);
+      }
+    }
+
+    const c1 = new Person('小星', 18)
+    c1.speak(); // person 这里属于实例调用，容易理解
+
+    const s1 = c1.speak;
+    // undefiend class定义的类自动使用use strick模式
+    // 不是严格模式的话，这里得到的应该是window，s1 = c1.speak这里的意思是s1的指向c1的speak方法，s1只是一个单纯的function
+    // 谁调用，this就指向谁，这里没有调用者，非严格模式应该是window对象，严格模式下执行s1就得到undefiend
+    s1();
+
+    // <h1 onClick={this.handleClick}>哈哈哈</h1>
+    // 这里react处理的结果是找到this.handleClick，发现是一个function，然后赋值给onClick
+    // 当触发点击事件时，function中如果取this的话会拿到undefiend，就没办法拿到react实例对象了
+
+    // <h1 onClick={() => this.handleClick()}>哈哈哈</h1>
+    // 这样写是把一个方法赋值给onClick，点击时执行方法，方法中执行this.handleClick()，箭头函数的this就近指向了react对象
+
+    // 当我使用babel+<script type="text/babel">时，s1执行会拿到window，不知道是不是babel转的问题
+  </script>
+</body>
+
+</html>

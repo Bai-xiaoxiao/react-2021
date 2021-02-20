@@ -24,12 +24,21 @@
         }
       }
 
+      // 类的属性也可以直接写在外面，和写在构造器中的作用等同
+      // state = {
+      //   isHot: true
+      // }
+
       handleClick() {
         console.log(this);
-        this.setState(state => {
-          return {
-            isHot: !this.state.isHot
-          }
+        // 这里两种写法
+        // this.setState(state => {
+        //   return {
+        //     isHot: !this.state.isHot
+        //   }
+        // })
+        this.setState({
+          isHot: !this.state.isHot
         })
       }
 
@@ -37,8 +46,11 @@
         const { state } = this;
 
         // onClick={this.handleClick}这种写法：handleClick的this得到window
+        // onClick={function() {console.log(this)} // this得到window
         // onClick={() => this.handleClick()}这种写法：箭头函数找就近的this，得到实例对象
         return <h1 onClick={() => this.handleClick()}>今天的天气很{state.isHot ? '炎热' : '寒冷'}</h1>
+        // 使用bind也可以
+        // return <h1 onClick={this.handleClick.bind(this)}>今天的天气很{state.isHot ? '炎热' : '寒冷'}</h1>
       }
     }
 
