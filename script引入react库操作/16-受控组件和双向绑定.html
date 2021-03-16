@@ -1,0 +1,61 @@
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="icon" href="https://element.eleme.cn/2.14/favicon.ico">
+</head>
+
+<body>
+  <div id="test"></div>
+  <script src="https://cdn.bootcdn.net/ajax/libs/react/17.0.1/umd/react.development.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/react-dom/17.0.1/umd/react-dom.development.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/babel-standalone/7.0.0-beta.3/babel.min.js"></script>
+  <!-- 16版本后，PropTypes需要单独引入，之前是挂载到React对象上的 -->
+  <script src="https://cdn.bootcdn.net/ajax/libs/prop-types/15.7.2/prop-types.js"></script>
+
+  <script type="text/babel">
+    // 推荐使用受控组件的方式，少用ref
+    class Frm extends React.Component {
+      handleSubmit = (event) => {
+        event.preventDefault();
+        const {username, password} = this.state
+        document.write(`账号是：${username}， 密码是：${password}`)
+      }
+
+      state = {
+        username: '',
+        password: ''
+      }
+
+      setData = (dataType, event) => {
+        // 组件初始化的时候调用了一次，创建了一个函数，并且拿到了传入的dataType
+        // 闭包的概念
+        // 如果这里不返回函数，也可以在jsx里面写() => this.this.setData('username')
+        // return (event) => {
+          console.log(event);
+          this.setState({
+            [dataType]: event.target.value
+          })
+        // }
+      }
+
+      render() {
+        return (
+          <form onSubmit={this.handleSubmit}>
+            {/*账号：<input onChange={this.setData('username')} type="text" />*/}
+            账号：<input onChange={(event) => this.setData('username', event)} type="text" />
+            {/*密码：<input onChange={this.setData('password')} type="password" />*/}
+            密码：<input onChange={(event) => this.setData('password', event)} type="password" />
+            <button>提交</button>
+          </form>
+        )
+      }
+    }
+
+    ReactDOM.render(<Frm />, document.getElementById('test'));
+  </script>
+</body>
+
+</html>

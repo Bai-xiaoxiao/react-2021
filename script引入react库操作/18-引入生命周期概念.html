@@ -1,0 +1,58 @@
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="icon" href="https://element.eleme.cn/2.14/favicon.ico">
+</head>
+
+<body>
+  <div id="test"></div>
+  <script src="https://cdn.bootcdn.net/ajax/libs/react/17.0.1/umd/react.development.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/react-dom/17.0.1/umd/react-dom.development.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/babel-standalone/7.0.0-beta.3/babel.min.js"></script>
+  <!-- 16版本后，PropTypes需要单独引入，之前是挂载到React对象上的 -->
+  <script src="https://cdn.bootcdn.net/ajax/libs/prop-types/15.7.2/prop-types.js"></script>
+
+  <script type="text/babel">
+    class Life extends React.Component {
+      state = { opacity: 1 }
+
+      destroy = () => {
+        // 手动销毁组件
+        ReactDOM.unmountComponentAtNode(document.getElementById('test'))
+      }
+
+      // 组件挂载之后
+      componentDidMount() {
+        let {opacity} = this.state
+        this.timer = setInterval(() => {
+          console.log('定时器执行');
+          opacity -= 0.1
+          if(opacity <= 0) opacity = 1
+          this.setState({opacity})
+        }, 250)
+      }
+
+      // 销毁之前清除定时器 mount挂载，unmount卸载
+      componentWillUnmount() {
+        clearInterval(this.timer)
+      }
+
+      render() {
+        console.log('render在渲染时和更新时都会调用');
+        return (
+          <div>
+            <h1 style={{ opacity: this.state.opacity }}>react学不会嘛，怎么办</h1>
+            <button onClick={this.destroy}>能怎么办呢</button>
+          </div>
+        )
+      }
+    }
+
+    ReactDOM.render(<Life />, document.getElementById('test'))
+  </script>
+</body>
+
+</html>

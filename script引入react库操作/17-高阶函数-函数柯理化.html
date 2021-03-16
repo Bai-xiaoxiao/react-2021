@@ -1,0 +1,53 @@
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="icon" href="https://element.eleme.cn/2.14/favicon.ico">
+</head>
+
+<body>
+  <div id="test"></div>
+  <script src="https://cdn.bootcdn.net/ajax/libs/react/17.0.1/umd/react.development.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/react-dom/17.0.1/umd/react-dom.development.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/babel-standalone/7.0.0-beta.3/babel.min.js"></script>
+  <!-- 16版本后，PropTypes需要单独引入，之前是挂载到React对象上的 -->
+  <script src="https://cdn.bootcdn.net/ajax/libs/prop-types/15.7.2/prop-types.js"></script>
+
+  <script type="text/babel">
+    // 高阶函数（满足任一条件）：函数的参数是函数、函数的返回值是函数
+    // 柯理化：通过函数调用继续返回函数，实现多次接收参数统一处理的编码方式
+
+    // 普通函数
+    function sum(a,b,c) {
+      return a + b + c
+    }
+
+    // 柯理化
+    function sumkl(a) {
+      return (b) => {
+        return (c) => {
+          return a + b + c
+        }
+      }
+    }
+    console.log(sumkl(1)(2)(3))
+
+    // 关于柯理化就会谈到闭包
+    function bb() {
+      let a = 1;
+      return () => {
+        a++; // a访问了外部的作用域，常驻内存，且外部访问不到这个a，达到变量私有化的目的
+        console.log('我是闭包', a);
+      }
+    }
+    let f = bb(1);
+    for (let i = 0; i < 100; i++) {
+      // bb(1)
+      f();
+    }
+  </script>
+</body>
+
+</html>
