@@ -18,17 +18,42 @@
 
   <script type="text/babel">
     class Person extends React.Component {
+      // static xx = 111 等价于 在class外面写Person.xx = 111
       // static意味静态方法，可以直接通过Person.xx来调用，不加static则是需要Person.prototype.xx
       // 一个挂载在自身上，一个挂载在原型对象上，new出来的实例对象不具备static的方法
       // static的方法中的this指向类，而不是实例，因为实例根本就没有static方法
       // 如果是构造函数继承了Person类，那么新的构造函数也会带有static静态方法
       // class P3 extends Person{} P3也会有propTypes的静态方法
 
+      // 这种写法等同于
+      // constructor(props) {
+      //   super(props);
+      //   this.xx = 1
+      // }
+      // Person.prototype.xx => undefiend
+      // a = new Person() => a.xx => 1
+      // Person.prototype.render => function
+      // a = new Person() => a.render => function
+      // 得出结论：如果是普通属性就挂载到构造函数的构造器中去，如果是静态属性就挂载到构造函数自身的属性上，如果是方法就挂载到构造函数prototype上
+      // 构造器中的属性没办法直接通过构造函数点出来，可以通过实例对象点出来
+      // 静态属性可以通过构造函数点出来，实例点不出来
+      // 构造函数prototype上的方法可以通过实例点出来
+      // 由此可以的出结论，new操作是先复制构造函数原型链上的属性，再执行构造函数的构造器修改this指向。跟构造函数自身的属性无关
+      // 但是类的继承确可以继承构造函数的属性
+      xx = 1
+
       // 类的静态属性必须命名为propTypes，小写开头
       // PropTypes是一个类，大写开头
+      // PropTypes具有很多属性，可以自己console看，
+      // isRequired代表必传
       static propTypes = {
-        name: PropTypes.string,
+        // name: React.PropTypes.string, 15.5版本已经弃用，新版本抽离出来了
+        name: PropTypes.string.isRequired,
         age: PropTypes.number
+      }
+
+      static defaultProps = {
+        age: 998
       }
 
       render() {
@@ -47,7 +72,7 @@
       age: 18
     }
 
-    ReactDOM.render(<Person name="校长" age={19} />, document.getElementById('test'))
+    ReactDOM.render(<Person name="校长" />, document.getElementById('test'))
     ReactDOM.render(<Person {...p} />, document.getElementById('test2'))
   </script>
 </body>

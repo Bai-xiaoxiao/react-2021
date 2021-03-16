@@ -1,0 +1,48 @@
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="icon" href="https://element.eleme.cn/2.14/favicon.ico">
+</head>
+
+<body>
+  <div id="test"></div>
+  <script src="https://cdn.bootcdn.net/ajax/libs/react/17.0.1/umd/react.development.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/react-dom/17.0.1/umd/react-dom.development.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/babel-standalone/7.0.0-beta.3/babel.min.js"></script>
+  <!-- 16版本后，PropTypes需要单独引入，之前是挂载到React对象上的 -->
+  <script src="https://cdn.bootcdn.net/ajax/libs/prop-types/15.7.2/prop-types.js"></script>
+
+  <script type="text/babel">
+    function Person(props) {
+      const { name, age } = props
+      return (
+        <ul>
+          <li>姓名：{name}</li>
+          <li>年龄：{age}</li>
+        </ul>
+      )
+    }
+
+    Person.propTypes = {
+      name: PropTypes.string.isRequired,
+      age: PropTypes.number,
+    }
+
+    Person.defaultProps = {
+      name: '无名',
+      age: 18,
+    }
+
+    const p = {
+      name: '啊啊所多',
+      age: 19
+    }
+
+    ReactDOM.render(<Person {...p} />, document.getElementById('test'))
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,41 @@
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="icon" href="https://element.eleme.cn/2.14/favicon.ico">
+</head>
+
+<body>
+  <div id="test"></div>
+  <script src="https://cdn.bootcdn.net/ajax/libs/react/17.0.1/umd/react.development.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/react-dom/17.0.1/umd/react-dom.development.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/babel-standalone/7.0.0-beta.3/babel.min.js"></script>
+  <!-- 16版本后，PropTypes需要单独引入，之前是挂载到React对象上的 -->
+  <script src="https://cdn.bootcdn.net/ajax/libs/prop-types/15.7.2/prop-types.js"></script>
+
+  <script type="text/babel">
+    class Frm extends React.Component {
+      handleSubmit = (event) => {
+        event.preventDefault();
+        const {username, password} = this
+        document.write(`账号是：${username.value}， 密码是：${password.value}`)
+      }
+
+      render() {
+        return (
+          <form onSubmit={this.handleSubmit}>
+            账号：<input ref={el => this.username = el} type="text" />
+            密码：<input ref={el => this.password = el} type="password" />
+            <button>提交</button>
+          </form>
+        )
+      }
+    }
+
+    ReactDOM.render(<Frm />, document.getElementById('test'));
+  </script>
+</body>
+
+</html>

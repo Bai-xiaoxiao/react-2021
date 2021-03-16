@@ -1,0 +1,67 @@
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="icon" href="https://element.eleme.cn/2.14/favicon.ico">
+</head>
+
+<body>
+  <div id="test"></div>
+  <script src="https://cdn.bootcdn.net/ajax/libs/react/17.0.1/umd/react.development.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/react-dom/17.0.1/umd/react-dom.development.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/babel-standalone/7.0.0-beta.3/babel.min.js"></script>
+  <!-- 16版本后，PropTypes需要单独引入，之前是挂载到React对象上的 -->
+  <script src="https://cdn.bootcdn.net/ajax/libs/prop-types/15.7.2/prop-types.js"></script>
+
+  <script type="text/babel">
+    class Person extends React.Component {
+      state = {
+        rp: '失去焦点提示数据'
+      }
+
+      render() {
+        return (
+          <div>
+            {/*JSX中使用花括号代表要执行js表达式，表达式中使用js的注释符号就可以执行js的注释语句*/}
+            {/*<p></p>*/}
+            <input ref="left1" type="text" />
+            <input ref={this.left2} type="text" />
+            <button onClick={this.btnClick}>提示左侧数据</button>
+            <input onBlur={this.blured} ref={this.getRightRef} type="text" placeholder={this.state.rp} />
+            <input onBlur={this.blured} ref={el => this.getRightRef = el} type="text" placeholder={this.state.rp} />
+          </div>
+        )
+      }
+
+      btnClick = () => {
+        // refs可以拿到对应的dom节点，从dom上取到value
+        alert(this.refs.left1.value)
+        console.log(this.refs, this.left2);
+        // 使用createful方式创建的ref不在this.refs中
+        alert(this.left2.current.value);
+      }
+
+      left2 = React.createRef()
+
+      // 如果在jsx中内联使用回调函数，在组件更新时会执行两次，第一次element为null，第二次为dom
+      // 这是因为react在组件更新时会再去调一次render，如果是内联的函数，diff时就无法判断方法是否被修改，内联函数会被当做新的函数处理
+      // diff时遇到新的方法，会先清空旧的方法，所以得到一个null，第二次再赋值时才会拿到dom
+      // 放在构造函数内，那么diff时就判断出方法没有被修改，而不会去消耗性能去更新这个方法
+      getRightRef = element => this.right = element
+
+      blured = () => {
+        // 字符串形式的ref会影响效率因为会一直挂在到this上（实际影响应该很小）
+        // 字符串写死无法有效的修改，一个组件只能有一个ref，如果组件库中别人使用了ref，那么自己就无法再加一个ref了。
+        // 以后新版本可能会禁用掉，现在建议用createful或者回调形式的ref
+        console.log(this);
+        alert(this.right.value)
+      }
+    }
+
+    ReactDOM.render(<Person />, document.getElementById('test'))
+  </script>
+</body>
+
+</html>

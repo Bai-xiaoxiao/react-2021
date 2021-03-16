@@ -1,0 +1,44 @@
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="icon" href="https://element.eleme.cn/2.14/favicon.ico">
+</head>
+
+<body>
+  <div id="test"></div>
+  <script src="https://cdn.bootcdn.net/ajax/libs/react/17.0.1/umd/react.development.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/react-dom/17.0.1/umd/react-dom.development.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/babel-standalone/7.0.0-beta.3/babel.min.js"></script>
+
+  <script type="text/babel">
+    class Person extends React.Component {
+      constructor(props) {
+        // super中如果不传props，那么构造器中就无法拿到this.props，但是其他地方是可以拿到的
+        super();
+        console.log(this.props);
+      }
+
+      render() {
+        const {name, age} = this.props
+        return (
+          <ul>
+            <li>姓名：{name}</li>
+            <li>年龄：{age}</li>
+          </ul>
+        )
+      }
+    }
+
+    const p = {
+      name: '小李',
+      age: 18
+    }
+
+    ReactDOM.render(<Person {...p} />, document.getElementById('test'))
+  </script>
+</body>
+
+</html>
