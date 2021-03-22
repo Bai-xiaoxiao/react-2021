@@ -1,0 +1,148 @@
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="icon" href="https://element.eleme.cn/2.14/favicon.ico">
+</head>
+
+<body>
+  <div id="test"></div>
+  <script src="https://cdn.bootcdn.net/ajax/libs/react/17.0.1/umd/react.development.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/react-dom/17.0.1/umd/react-dom.development.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/babel-standalone/7.0.0-beta.3/babel.min.js"></script>
+  <!-- 16版本后，PropTypes需要单独引入，之前是挂载到React对象上的 -->
+  <script src="https://cdn.bootcdn.net/ajax/libs/prop-types/15.7.2/prop-types.js"></script>
+
+  <script type="text/babel">
+    // 声明周期图谱：https://projects.wojtekmaj.pl/react-lifecycle-methods-diagram/
+    class Life extends React.Component {
+      constructor() {
+        super();
+        console.log('constructor--这个时候拿不到dom', this);
+        this.state = { count: 0, gg: '我是gg' }
+      }
+
+      updateState = () => {
+        let {count} = this.state
+        count++;
+        this.setState({
+          count
+        })
+      }
+
+      destroy = () => {
+        // 手动销毁组件
+        ReactDOM.unmountComponentAtNode(document.getElementById('test'))
+      }
+
+      // 将要挂载
+      componentWillMount() {
+        console.log('组件将要挂载了');
+      }
+
+      // 组件挂载完成
+      componentDidMount() {
+        console.log('组件挂载完成，可以拿到dom节点', this, this.refs.h1);
+      }
+
+      // 是否需要更新 forceUpdate不受这个控制
+      shouldComponentUpdate() {
+        const {count} = this.state
+        console.log('是否要更新呢？', count < 5);
+        return count < 5
+      }
+
+      // 组件将要更新--旧版本，17.x中会给出警告，但是依然有效
+      // 使用UNSAFE_componentWillUpdate作用一样，但不会有警告
+      componentWillUpdate() {
+        console.log('组件将要更新了呢');
+      }
+
+      // 组件更新完成
+      componentDidUpdate(prevProps, prevState, snapshot) {
+        console.log(prevProps, prevState, snapshot);
+        // 如果有子组件，会在render之后触发子组件的更新生命周期
+        // 子组件的componentDidUpdate触发之后，才会触发父组件的componentDidUpdate
+        console.log('组件更新完成，--这里会在render之后调用');
+      }
+
+      // 销毁之前清除定时器 mount挂载，unmount卸载
+      componentWillUnmount() {
+        console.log('要卸载了', this);
+      }
+
+      // 如果state在任何时候都需要取决于props时，可以用到这个生命周期，一般不用，可以监听props来修改state来替换这个方法
+      /* static getDerivedStateFromProps(props, state) {
+        // 这里的返回值为对象，且会替换state中的值，使state中的值无效
+        return props
+      } */
+
+      /* getSnapshotBeforeUpdate() 在最近一次渲染输出（提交到 DOM 节点）之前调用。
+        它使得组件能在发生更改之前从 DOM 中捕获一些信息（例如，滚动位置）。
+        此生命周期的任何返回值将作为参数传递给 componentDidUpdate()。 
+        主要用法是：如果更新之后dom层级变化了，但是又想让某些东西保持到更新之前的状态（滚动条，或者是其他），
+        那么这里可以拿到之前的滚动条高度，然后传给componentDidUpdate，渲染出来之后，再修改滚动条位置即可
+      */
+      getSnapshotBeforeUpdate(prevProps, prevState) {
+        console.log('render和componentDidUpdate之间，更新时触发');
+        return null
+      }
+
+      render() {
+        console.log('render在渲染时和更新时都会调用');
+        const {count, gg} = this.state
+        return (
+          <div>
+            <h1 ref="h1">count: {count}</h1>
+            <h2>gg: {gg}</h2>
+            <button onClick={this.updateState}>更新</button>
+            <button onClick={this.destroy}>卸载</button>
+            <Child count={count} />
+          </div>
+        )
+      }
+    }
+
+    class Child extends React.Component {
+      // props更新时触发，第一次渲染不触发---旧版本的---会有警告，使用getDerivedStateFromProps消除警告
+      // 新版本建议用componentDidUpdate替代
+      componentWillReceiveProps(props) {
+        console.log('props更新啦', props);
+      }
+
+      shouldComponentUpdate() {
+        // 返回false也可以限制来自props的更新
+        return true
+      }
+
+      componentDidUpdate() {
+        console.log('子组件更新啦');
+      }
+
+      render() {
+        return (
+          <h2>我是子组件，我收到的props是：{this.props.count}</h2>
+        )
+      }
+    }
+
+    /* 
+      基于旧版本：
+        - 初始化阶段: constroctor => componentWillMount => render => componentDidMount
+        - 更新阶段: shouldComponentUpdate(componentWillReceiveProps) => componentWillUpdate => render => componentDidUpdate
+        - 卸载阶段(ReactDOM.unmountComponentAtNode触发): componentWillUnmount
+      
+      基于新版本17.x：需要在(componentWillMount/componentWillReceiveProps/componentWillUpdate)前面加上UNSAFE_可以消除警告
+      在未来的18.x中不加UNSAFE_可能直接就会失效了
+        - 初始化阶段: constroctor => getDerivedStateFromProps => render => componentDidMount
+        - 更新阶段: shouldComponentUpdate(componentWillReceiveProps) => getDerivedStateFromProps => render => getSnapshotBeforeUpdate => componentDidUpdate
+        - 卸载阶段(ReactDOM.unmountComponentAtNode触发): componentWillUnmount
+    */
+
+    ReactDOM.render(<Life gg="我是props的gg" />, document.getElementById('test'))
+  </script>
+</body>
+
+</html>
