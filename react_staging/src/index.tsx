@@ -5,6 +5,9 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
+  /* React.StrictMode帮助检查代码中不合理的地方
+    例如字符串类型的ref="xxx"
+  */
   <React.StrictMode>
     <App />
   </React.StrictMode>,
