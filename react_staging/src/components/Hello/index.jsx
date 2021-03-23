@@ -4,7 +4,7 @@ export default class Hello extends Component {
   render() {
     let a = 0
     let b = null
-    if(a == 0) {
+    if(a === 0) {
       b = 123
     } else {
       b = 'asdasd'
