@@ -1,29 +1,22 @@
 import React, { Component } from 'react'
+import Ipt from './Ipt'
 
 export default class ToDoList extends Component {
   state = {
     list: [],
   }
 
-  iptDom = React.createRef()
-
-  add = () => {
+  add = (text) => {
+    // 这里如果不写箭头函数，那么this会指向调用者 => 子组件的.props
+    console.log(this);
     const { list } = this.state
-    const iptValue = this.iptDom.current.value
-    if (iptValue === '') {
-      alert('请输入事件名称')
-      return
-    }
-
     this.setState({
       list: [{
         id: list.length,
-        text: iptValue,
+        text,
         status: false
       }, ...list]
     })
-
-    this.iptDom.current.value = ''
   }
 
   del = (id) => {
@@ -51,10 +44,11 @@ export default class ToDoList extends Component {
 
   render() {
     const { list } = this.state
+    // reduce(fun, initValue)
+    const hasDone = list.reduce((pre, current) => pre + (current.status ? 1 : 0), 0)
     return (
       <div>
-        <input ref={this.iptDom} type="text" />
-        <button onClick={this.add}>添加</button>
+        <Ipt addFun={this.add} />
 
         <h2>已添加的事件：</h2>
         <ul>
@@ -74,7 +68,7 @@ export default class ToDoList extends Component {
         <h3>
           已完成了
           {
-            list.filter(item => item.status).length
+            hasDone
           }
           /
           {list.length}</h3>
