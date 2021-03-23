@@ -1,13 +1,12 @@
-import {Component} from 'react'
-import Hello from './components/Hello'
+import React, { Component } from 'react'
+import TodoList from './components/ToDoList'
 
 export default class App extends Component {
   render() {
     return (
-      <div className="App">
-        贺鹤达
-        <Hello />
+      <div>
+        <TodoList />
       </div>
-    );
+    )
   }
 }
