@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import Ipt from './Ipt'
+import Ipt from '../../components/TodoListIpt'
 
 export default class ToDoList extends Component {
   state = {

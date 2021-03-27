@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import axios from 'axios'
-import Item from './Item'
+import Item from '../../components/UserListItem'
 // 需要加上module的后缀名才能识别
 import IndexCss from './index.module.css'
 console.log(IndexCss);
