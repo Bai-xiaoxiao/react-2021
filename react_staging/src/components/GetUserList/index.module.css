@@ -1,0 +1,22 @@
+.list {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  color: #1890ff;
+}
+
+.item {
+  width: 20%;
+  margin-bottom: 30px;
+  border: 1px solid #ddd;
+  text-align: center;
+}
+
+.img {
+  width: 100px;
+  height: 100px;
+}
+
+.hide {
+  display: none;
+}

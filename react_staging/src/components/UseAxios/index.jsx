@@ -30,7 +30,7 @@ export default class UseAxios extends Component {
   render() {
     return (
       <div>
-        <h2>使用axios请求数据</h2>
+        <h2>使用axios请求数据，配置代理等信息</h2>
         <button onClick={this.getSData}>获取segmentfault数据</button>
         <button onClick={this.getBData}>获取bilibili数据</button>
       </div>
