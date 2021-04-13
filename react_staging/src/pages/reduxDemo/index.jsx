@@ -11,6 +11,7 @@ export default class index extends Component {
   }
 
   componentDidMount() {
+    // store暴露subscribe方式，自己更新时会调用
     store.subscribe(() => {
       this.setState({}); // 手动调用刷新
     })
@@ -22,6 +23,7 @@ export default class index extends Component {
 
   increment = () => {
     let {selectNum} = this.state
+    // 只能使用dispatch触发reducer
     store.dispatch({type: 'increment', num: selectNum})
   }
 
@@ -62,7 +64,8 @@ export default class index extends Component {
         &nbsp;
         <Button onClick={this.asyncIncrement} type="primary">异步加</Button>
         &nbsp;
-        <b>目前的值是：{store.getState().count}{store.getState().b}</b>
+        {/* getState来获取值 */}
+        <b>目前的值是：{store.getState()}</b>
       </div>
     )
   }
