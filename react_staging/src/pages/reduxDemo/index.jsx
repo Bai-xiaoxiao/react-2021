@@ -1,71 +1,72 @@
 import React, { Component } from 'react'
-import { Select } from 'antd';
 import { Button } from 'antd';
-import store from '../../redux'
+import store from '../../redux/store'
 
-const { Option } = Select;
+class Woman extends Component {
+
+  sheng = () => {
+    store.dispatch({type: 'addPerson'})
+  }
+
+  render() {
+    return (
+      <div>
+        <b>当前生育总人数：{store.getState().woman.length}</b>
+        <br />
+        <Button onClick={this.sheng}>点我生娃儿</Button>
+      </div>
+    )
+  }
+}
+
+class Person extends Component {
+  componentDidMount() {
+    store.subscribe(() => {
+      this.setState({});
+    })
+  }
+
+  kill = (id) => {
+    store.dispatch({type: 'killPerson', data: id})
+  }
+
+  render() {
+    const person = store.getState().woman
+
+    return (
+      <ul>
+        {
+          person.map(item => (
+            <li key={item.id}>
+              姓名： {item.name}， 年龄：{item.age}
+              <Button onClick={() => this.kill(item.id)}>自我毁灭</Button>
+            </li>
+          ))
+        }
+      </ul>
+    )
+  }
+}
 
 export default class index extends Component {
   state = {
     selectNum: 1
   }
 
-  componentDidMount() {
-    // store暴露subscribe方式，自己更新时会调用
-    store.subscribe(() => {
-      this.setState({}); // 手动调用刷新
-    })
-  }
-
-  selectChange = (value) => {
-    this.setState({selectNum: value})
-  }
-
-  increment = () => {
-    let {selectNum} = this.state
-    // 只能使用dispatch触发reducer
-    store.dispatch({type: 'increment', num: selectNum})
-  }
-
-  decrement = () => {
-    let {selectNum} = this.state
-    store.dispatch({type: 'decrement', num: selectNum})
-  }
-
-  oddIncrement = () => {
-    let {selectNum} = this.state
-    if(selectNum % 2 !== 0) {
-      store.dispatch({type: 'increment', num: selectNum})
-    }
-  }
-
-  asyncIncrement = () => {
-    let {selectNum} = this.state
-    setTimeout(() => {
-      store.dispatch({type: 'increment', num: selectNum})
-    }, 1000);
-  }
-
   render() {
     return (
-      <div>
+      <div style={{width: '600px', height: '1000px'}}>
         <h2>redux状态管理</h2>
-        <Select defaultValue={this.state.selectNum} onChange={this.selectChange} style={{width: 100}}>
-          <Option value={1}>1</Option>
-          <Option value={2}>2</Option>
-          <Option value={3}>3</Option>
-        </Select>
-        &nbsp;
-        <Button onClick={this.increment} type="primary">加</Button>
-        &nbsp;
-        <Button onClick={this.decrement} type="primary">减</Button>
-        &nbsp;
-        <Button onClick={this.oddIncrement} type="primary">奇数加</Button>
-        &nbsp;
-        <Button onClick={this.asyncIncrement} type="primary">异步加</Button>
-        &nbsp;
-        {/* getState来获取值 */}
-        <b>目前的值是：{store.getState()}</b>
+        <div style={{display: 'flex'}}>
+          <div style={{background: 'pink', width: '50%'}}>
+            <b>女人组件</b>
+            <Woman />
+          </div>
+          <div style={{background: 'gray', width: '50%'}}>
+            <b>人类组件</b>
+            <Person />
+          </div>
+        </div>
       </div>
     )
   }
