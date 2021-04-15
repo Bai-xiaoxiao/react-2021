@@ -9,6 +9,9 @@ import JsJump from './pages/JsJump'
 import AntdDemo from './pages/AntdDemo'
 import reduxDemo from './pages/reduxDemo'
 import RouterHeader from './components/RouterHeader'
+import ShouldUpdate from './pages/ShouldUpdate'
+import Slot from './pages/Slot'
+import ErrorPage from './pages/ErrorPage'
 /* 
   Link组件类似于a标签，点击做跳转，默认是push跳转、
     添加replace属性，作replace跳转
@@ -52,6 +55,9 @@ export default class App extends Component {
             <li><NavLink to="/js-jump" className={AppCss['nav-link']} activeClassName={AppCss['active']}>通过js做跳转</NavLink></li>
             <li><NavLink to="/antd-demo" className={AppCss['nav-link']} activeClassName={AppCss['active']}>演示antd引入</NavLink></li>
             <li><NavLink to="/redux-demo" className={AppCss['nav-link']} activeClassName={AppCss['active']}>redux状态管理</NavLink></li>
+            <li><NavLink to="/shuold-update" className={AppCss['nav-link']} activeClassName={AppCss['active']}>优化shouldComponentUpdate</NavLink></li>
+            <li><NavLink to="/slot" className={AppCss['nav-link']} activeClassName={AppCss['active']}>插槽处理</NavLink></li>
+            <li><NavLink to="/error" className={AppCss['nav-link']} activeClassName={AppCss['active']}>组件错误处理</NavLink></li>
           </ul>
         </div>
 
@@ -75,6 +81,9 @@ export default class App extends Component {
             {/* 演示antd引入 */}
             <Route path="/antd-demo" component={AntdDemo} />
             <Route path="/redux-demo" component={reduxDemo} />
+            <Route path="/shuold-update" component={ShouldUpdate} />
+            <Route path="/slot" component={Slot} />
+            <Route path="/error" component={ErrorPage} />
 
             {/* 
             - 如果没有匹配到任何路由，重新向到这里
